@@ -2,9 +2,10 @@ name: SST Testing Frameworks Branch CI
 
 on:
   workflow_dispatch:
-#  push:
-#    branches-ignore:
-#      - master
+  push:
+    branches-ignore:
+      - master
+      - devel
 
 defaults:
   run:
