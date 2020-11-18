@@ -66,6 +66,16 @@ jobs:
         echo "Trying mpirun = " `which mpirun`
         echo "mpirun version = " `mpirun --version`
 
+    - name: Install Autotools
+      run: |
+        echo "*******************************************"
+        echo "*** INSTALL AUTOTOOLS"
+        echo "*******************************************"
+        sudo apt-get install -y autotools-dev
+        echo "***"
+
+SST_CORE_BIN
+
     - name: Secondary Information Dump
       run: |
         echo "*******************************************"
