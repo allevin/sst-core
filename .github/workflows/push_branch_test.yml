@@ -1,0 +1,79 @@
+name: SST Testing Frameworks Branch CI
+
+on:
+  workflow_dispatch:
+#  push:
+#    branches-ignore:
+#      - master
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+env:
+  SST_CORE_HOME: $HOME/local/sstcore
+  SST_ELEMENTS_HOME: $HOME/local/sstelements
+
+jobs:
+  Build_and_Test:
+    name: ${{ matrix.TARGET }}/${{ matrix.python }}${{ matrix.other }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-18.04]
+#        python: [2.7, 3.5, 3.6, 3.7, 3.8]
+        python: [2.7]
+        other: [""]
+
+    steps:
+    - name: Checkout SST-Core source
+      uses: actions/checkout@v2
+
+    - name: Install OpenMPI
+      run: |
+        echo "*******************************************"
+        echo "*** INSTALL OPENMPI"
+        echo "*******************************************"
+        echo "Trying mpiRun"
+        which mpirun
+        mpirun --version
+
+    - name: Initial Information Dump
+      run: |
+        echo "*******************************************"
+        echo "*** INITIAL INFO DUMP"
+        echo "*******************************************"
+        echo
+        echo "pwd = " `pwd`
+        echo "env | sort = "
+        env | sort
+
+    - name: Perform Autogen on SST-Core
+      run: |
+        echo "*******************************************"
+        echo "*** RUNNING AUTOGEN ON SST-Core"
+        echo "*******************************************"
+        ./autogen
+
+    - name: Perform Configure on SST-Core
+      run: |
+        echo "*******************************************"
+        echo "*** RUNNING CONFIGURE ON SST-Core"
+        echo "*******************************************"
+        ./configure --prefix=$SST_CORE_HOME
+
+    - name: Perform Make on SST-Core
+      run: |
+        echo "*******************************************"
+        echo "*** RUNNING MAKE ON SST-Core"
+        echo "*******************************************"
+        make -j16
+
+    - name: Perform Make on SST-Core
+      run: |
+        echo "*******************************************"
+        echo "*** RUNNING MAKE INSTALL ON SST-Core"
+        echo "*******************************************"
+        make install
+
