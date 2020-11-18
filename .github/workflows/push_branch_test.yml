@@ -54,6 +54,7 @@ jobs:
         echo "SST_ELEMENTS_HOME=$HOME/local/sstelements_install" >> $GITHUB_ENV
         echo "SST_ELEMENTS_BIN=$HOME/local/sstelements_install/bin" >> $GITHUB_ENV
         echo "$SST_CORE_BIN" >> $GITHUB_PATH
+        export PATH=${SST_CORE_BIN}:${PATH}
 
     - name: Install OpenMPI
       run: |
@@ -61,6 +62,7 @@ jobs:
         echo "*** INSTALL OPENMPI"
         echo "*******************************************"
         sudo apt-get install -y openmpi-bin
+        echo "***"
         echo "Trying mpirun = " `which mpirun`
         echo "mpirun version = " `mpirun --version`
 
