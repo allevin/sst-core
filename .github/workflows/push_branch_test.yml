@@ -66,13 +66,17 @@ jobs:
         echo "Trying mpirun = " `which mpirun`
         echo "mpirun version = " `mpirun --version`
 
-    - name: Install Autotools
+    - name: Setup Autotools
       run: |
         echo "*******************************************"
         echo "*** INSTALL AUTOTOOLS"
         echo "*******************************************"
-        sudo apt-get install -y autotools-dev
+#        sudo apt-get install -y autotools-dev
         echo "***"
+        export LIBTOOLIZE=$(type -P libtoolize)
+        export LIBTOOL=$(type -P "${LIBTOOLIZE%???}")
+        echo $LIBTOOLIZE
+        echo $LIBTOOL
 
     - name: Information Dump 2
       run: |
