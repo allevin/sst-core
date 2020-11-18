@@ -110,7 +110,24 @@ jobs:
         echo "*** RUNNING INSTALL ON SST-Core"
         echo "*******************************************"
         make install
+
+    - name: Check Install of SST-Core
+      run: |
+        echo "*******************************************"
+        echo "*** CHECK INSTALL OF SST-Core"
+        echo "*******************************************"
+        echo "$HOME path = " `echo $HOME`
+        echo "$SST_CORE_HOME path = " `echo $SST_CORE_HOME`
+        echo "$SST_CORE_BIN path = " `echo $SST_CORE_BIN`
+        echo "ls $HOME "
+        ls -lia $HOME
+        echo "ls $SST_CORE_HOME"
+        ls -lia $SST_CORE_HOME
+        echo "ls $SST_CORE_BIN"
+        ls -lia $SST_CORE_BIN
         echo "***"
+        echo "RUNNING sst-test-core"
+        echo ls SST_CORE_HOME
         echo "sst path = " `which sst`
         echo "***"
         echo "sst version = " `sst --version`
@@ -121,8 +138,5 @@ jobs:
         echo "*******************************************"
         echo "*** Testing SST-Core"
         echo "*******************************************"
-        echo "sst-test-core path = " `which sst-test-core`
-        echo "***"
-        echo "RUNNING sst-test-core"
         sst-test-core
         echo "***"
