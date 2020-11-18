@@ -24,7 +24,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
 #        python: [2.7, 3.5, 3.6, 3.7, 3.8]
-        python: [2.7 3.5]
+        python: [2.7. 3.5]
         other: [""]
 
     steps:
