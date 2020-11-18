@@ -31,7 +31,7 @@ jobs:
     - name: Checkout SST-Core source
       uses: actions/checkout@v2
 
-    - name: Initial Information Dump
+    - name: Information Dump 1
       run: |
         echo "*******************************************"
         echo "*** INITIAL INFO DUMP"
@@ -76,10 +76,10 @@ jobs:
 
 SST_CORE_BIN
 
-    - name: Secondary Information Dump
+    - name: Information Dump 2
       run: |
         echo "*******************************************"
-        echo "*** AFTER OPENMPI INFO DUMP"
+        echo "*** BEFORE SST BUILD INFO DUMP"
         echo "*******************************************"
         echo
         echo "pwd = " `pwd`
