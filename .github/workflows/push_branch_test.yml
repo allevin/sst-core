@@ -68,25 +68,6 @@ jobs:
         echo "mpirun version = " `mpirun --version`
         echo "***"
 
-    - name: Setup Autotools
-      run: |
-        echo "*******************************************"
-        echo "*** INSTALL AUTOTOOLS"
-        echo "*******************************************"
-        export LIBTOOLIZE=$(type -P libtoolize)
-        export LIBTOOL=$(type -P "${LIBTOOLIZE%???}")
-        echo "LIBTOOLIZE path = " `echo $LIBTOOLIZE`
-        echo "LIBTOOL path = " `echo $LIBTOOL`
-        echo "LIBTOOLIZE version = " `libtoolize --version`
-        echo "ACLOCAL    version = " `aclocal --version`
-        echo "AUTOHEADER version = " `autoheader --version`
-        echo "AUTOCONF   version = " `autoconf --version`
-        echo "AUTOMAKE   version = " `automake --version`
-        echo "AUTORECONF version = " `autoreconf --version`
-        echo "LIBTOOL    version = " `libtool --version`
-
-        echo "***"
-
     - name: Information Dump 2
       run: |
         echo "*******************************************"
@@ -123,11 +104,25 @@ jobs:
         make -j16
         echo "***"
 
-    - name: Perform Make on SST-Core
+    - name: Perform Install on SST-Core
       run: |
         echo "*******************************************"
-        echo "*** RUNNING MAKE INSTALL ON SST-Core"
+        echo "*** RUNNING INSTALL ON SST-Core"
         echo "*******************************************"
         make install
         echo "***"
+        echo "sst path = " `which sst`
+        echo "***"
+        echo "sst version = " `sst --version`
+        echo "***"
 
+    - name: Perform Testing on SST-Core
+      run: |
+        echo "*******************************************"
+        echo "*** Testing SST-Core"
+        echo "*******************************************"
+        echo "sst-test-core path = " `which sst-test-core`
+        echo "***"
+        echo "RUNNING sst-test-core"
+        sst-test-core
+        echo "***"
