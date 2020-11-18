@@ -23,13 +23,18 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-#        python: [2.7, 3.5, 3.6, 3.7, 3.8]
-        python: [2.7, 3.5]
+#        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        python-version: [2.7, 3.5]
         other: [""]
 
     steps:
     - name: Checkout SST-Core source
       uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
 
     - name: Information Dump 1
       run: |
