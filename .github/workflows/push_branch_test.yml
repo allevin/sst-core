@@ -78,7 +78,13 @@ jobs:
         echo "LIBTOOLIZE path = " `echo $LIBTOOLIZE`
         echo "LIBTOOL path = " `echo $LIBTOOL`
         echo "LIBTOOLIZE version = " `libtoolize --version`
-        echo "LIBTOOL version = " `libtool --version`
+        echo "ACLOCAL    version = " `aclocal --version`
+        echo "AUTOHEADER version = " `autoheader --version`
+        echo "AUTOCONF   version = " `autoconf --version`
+        echo "AUTOMAKE   version = " `automake --version`
+        echo "AUTORECONF version = " `autoreconf --version`
+        echo "LIBTOOL    version = " `libtool --version`
+
         echo "***"
 
     - name: Information Dump 2
