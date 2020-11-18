@@ -71,8 +71,6 @@ jobs:
         echo "*******************************************"
         echo "*** INSTALL AUTOTOOLS"
         echo "*******************************************"
-#        sudo apt-get install -y autotools-dev
-        echo "***"
         export LIBTOOLIZE=$(type -P libtoolize)
         export LIBTOOL=$(type -P "${LIBTOOLIZE%???}")
         echo $LIBTOOLIZE
