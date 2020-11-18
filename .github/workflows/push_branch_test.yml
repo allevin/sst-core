@@ -74,8 +74,6 @@ jobs:
         sudo apt-get install -y autotools-dev
         echo "***"
 
-SST_CORE_BIN
-
     - name: Information Dump 2
       run: |
         echo "*******************************************"
