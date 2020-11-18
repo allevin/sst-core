@@ -24,7 +24,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
 #        python: [2.7, 3.5, 3.6, 3.7, 3.8]
-        python: [2.7]
+        python: [2.7 3.5]
         other: [""]
 
     steps:
@@ -53,6 +53,14 @@ jobs:
         echo "SST_CORE_BIN=$HOME/local/sstcore_install/bin" >> $GITHUB_ENV
         echo "SST_ELEMENTS_HOME=$HOME/local/sstelements_install" >> $GITHUB_ENV
         echo "SST_ELEMENTS_BIN=$HOME/local/sstelements_install/bin" >> $GITHUB_ENV
+        echo "***"
+
+    - name: Install TestTools Module
+      run: |
+        echo "*******************************************"
+        echo "*** INSTALL TESTTOOLS"
+        echo "*******************************************"
+        pip install testtools
         echo "***"
 
     - name: Install OpenMPI
@@ -138,10 +146,13 @@ jobs:
         echo "$HOME path = " `echo $HOME`
         echo "$SST_CORE_HOME path = " `echo $SST_CORE_HOME`
         echo "$SST_CORE_BIN path = " `echo $SST_CORE_BIN`
+        echo "***"
         echo "ls $HOME "
         ls -lia $HOME
+        echo "***"
         echo "ls $SST_CORE_HOME"
         ls -lia $SST_CORE_HOME
+        echo "***"
         echo "ls $SST_CORE_BIN"
         ls -lia $SST_CORE_BIN
         echo "***"
@@ -150,8 +161,10 @@ jobs:
         echo "***"
         echo "sst version = " `$SST_CORE_BIN/sst --version`
         echo "***"
-        echo "Trying to PATH to SST BIN DIR"
-        echo "$SST_CORE_BIN" >> $GITHUB_PATH
+        echo "Trying to set the PATH to SST BIN DIR"
+        echo $SST_CORE_BIN >> $GITHUB_PATH
+        echo "***"
+        echo "running sst --version using the $PATH"
         sst --version
 
     - name: Perform Testing on SST-Core
