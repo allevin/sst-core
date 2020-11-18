@@ -31,11 +31,22 @@ jobs:
     - name: Checkout SST-Core source
       uses: actions/checkout@v2
 
+    - name: Initial Information Dump
+      run: |
+        echo "*******************************************"
+        echo "*** INITIAL INFO DUMP"
+        echo "*******************************************"
+        echo
+        echo "pwd = " `pwd`
+        echo "env | sort = "
+        env | sort
+
     - name: Install OpenMPI
       run: |
         echo "*******************************************"
         echo "*** INSTALL OPENMPI"
         echo "*******************************************"
+        sudo apt-get install -y openmpi-bin
         echo "Trying mpiRun"
         which mpirun
         mpirun --version
@@ -43,7 +54,7 @@ jobs:
     - name: Initial Information Dump
       run: |
         echo "*******************************************"
-        echo "*** INITIAL INFO DUMP"
+        echo "*** AFTER OPENMPI INFO DUMP"
         echo "*******************************************"
         echo
         echo "pwd = " `pwd`
