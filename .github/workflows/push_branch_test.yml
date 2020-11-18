@@ -167,9 +167,9 @@ jobs:
         echo "sst version = " `$SST_CORE_BIN/sst --version`
         echo "***"
         echo "Trying to set the PATH to SST BIN DIR"
-        echo $SST_CORE_BIN >> $GITHUB_PATH
+        echo /home/runner/local/sstcore_install/bin >> $GITHUB_PATH
         echo "***"
-        echo "running sst --version using the $PATH"
+        echo "running sst --version using the PATH"
         sst --version
 
     - name: Perform Testing on SST-Core
