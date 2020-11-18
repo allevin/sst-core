@@ -6,15 +6,19 @@ if [ -z $LIBTOOLIZE ] ; then
         LIBTOOLIZE=$(type -P glibtoolize)
     fi
 fi
-if [ -z $LIBTOOL ] ; then
-    LIBTOOL=$(type -P "${LIBTOOLIZE%???}")
-fi
+#if [ -z $LIBTOOL ] ; then
+#    LIBTOOL=$(type -P "${LIBTOOLIZE%???}")
+#fi
+#
+#if [ -z $LIBTOOL ] || [ -z $LIBTOOLIZE ] ; then
+#    echo "Unable to find working libtool. [$LIBTOOL][$LIBTOOLIZE]"
+#    exit 1
+#fi
 
-if [ -z $LIBTOOL ] || [ -z $LIBTOOLIZE ] ; then
-    echo "Unable to find working libtool. [$LIBTOOL][$LIBTOOLIZE]"
+if [ -z $LIBTOOLIZE ] ; then
+    echo "Unable to find working libtoolize. [$LIBTOOLIZE]"
     exit 1
 fi
-
 
 # Delete the old libtool output
 rm -rf libltdl src/sst/core/libltdl
