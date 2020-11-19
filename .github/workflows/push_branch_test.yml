@@ -11,18 +11,13 @@ defaults:
   run:
     shell: bash -l {0}
 
-#env:
-#  SST_CORE_HOME: $HOME/local/sstcore
-#  SST_ELEMENTS_HOME: $HOME/local/sstelements
-
 jobs:
   Build_and_Test:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        python-version: [2.7, 3.5]
-#        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
     name: ${{ matrix.os }}/PY-${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
 
@@ -50,7 +45,7 @@ jobs:
     - name: Set Env Variables
       run: |
         echo "*******************************************"
-        echo "*** SET ENV VARIABLES"
+        echo "*** SET ENV VARIABLES (AFFECTS FUTURE STEPS)"
         echo "*******************************************"
         echo "SST_CORE_HOME=$HOME/local/sstcore_install" >> $GITHUB_ENV
         echo "SST_CORE_BIN=$HOME/local/sstcore_install/bin" >> $GITHUB_ENV
@@ -155,28 +150,21 @@ jobs:
         echo "ls $SST_CORE_BIN"
         ls -lia $SST_CORE_BIN
         echo "***"
-        echo "TRYING TO SET THE PATH TO SST BIN DIR"
-        echo /home/runner/local/sstcore_install/bin >> $GITHUB_PATH
+        echo "SET THE PATH TO SST BIN DIR (ONLY AVAILABLE IN FUTURE STEPS)"
+        echo $SST_CORE_BIN >> $GITHUB_PATH
         echo "***"
-        echo "WHAT IS GITHUB_PATH"
+        echo "LOCATION OF GITHUB_PATH SCRIPT"
         echo $GITHUB_PATH
         echo "***"
         echo "CONTENTS OF GITHUB_PATH"
         cat $GITHUB_PATH
         echo "***"
 
-
     - name: Quick Check of SST-Core Operation
       run: |
         echo "*******************************************"
         echo "*** QUICK CHECK OF SST-CORE OPERATION"
         echo "*******************************************"
-        echo "DEBUG - WHAT IS GITHUB_PATH"
-        echo $GITHUB_PATH
-        echo "***"
-        echo "DEBUG - CONTENTS OF GITHUB_PATH"
-        cat $GITHUB_PATH
-        echo "***"
         echo "cd to $HOME"
         cd $HOME
         echo "***"
