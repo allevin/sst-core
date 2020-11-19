@@ -34,7 +34,7 @@ jobs:
         env | sort
         echo "***"
 
-    - name: Set Env Variables
+    - name: Set Source and General Install Env Variables
       run: |
         echo "*******************************************"
         echo "*** SET SOURCE AND LOCAL DIR ENV VAR (THIS AFFECTS FUTURE STEPS)"
@@ -49,7 +49,7 @@ jobs:
         cat $GITHUB_ENV
         echo "***"
 
-    - name: Set Env Variables
+    - name: Set SST Core and Elements Install Env Variables
       run: |
         echo "*******************************************"
         echo "*** SET ENV VARS (THIS AFFECTS FUTURE STEPS)"
@@ -75,10 +75,11 @@ jobs:
         path: ./sst-core_source
 
 #   Checkout the sstsimulator orgs sst-elements/devel branch
-    - name: Checkout SSTSimulators SST-Elements source
+    - name: Checkout sstsimulator SST-Elements source
       uses: actions/checkout@v2
       with:
         repository: sstsimulator/sst-elements
+        ref: devel
         path: ./sst-elements_source
 
     - name: Check Source Directories
