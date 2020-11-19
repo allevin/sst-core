@@ -2,10 +2,10 @@ name: SST-Core Test Frameworks
 
 on:
   workflow_dispatch:
-  push:
-    branches-ignore:
-      - master
-      - devel
+#  push:
+#    branches-ignore:
+#      - master
+#      - devel
 
 defaults:
   run:
