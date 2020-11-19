@@ -17,29 +17,28 @@ defaults:
 
 jobs:
   Build_and_Test:
-    name: ${{ matrix.TARGET }}/${{ matrix.python }}${{ matrix.other }}
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-#        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
         python-version: [2.7, 3.5]
-        other: [""]
+#        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+    name: ${{ matrix.os }}/${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout SST-Core source
       uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Information Dump 1
+    - name: System Information Dump - Startup
       run: |
         echo "*******************************************"
-        echo "*** INITIAL INFO DUMP"
+        echo "*** SYSTEM INFO DUMP AT STARTUP"
         echo "*******************************************"
         echo
         echo "pwd = " `pwd`
@@ -53,7 +52,6 @@ jobs:
         echo "*******************************************"
         echo "*** SET ENV VARIABLES"
         echo "*******************************************"
-        echo
         echo "SST_CORE_HOME=$HOME/local/sstcore_install" >> $GITHUB_ENV
         echo "SST_CORE_BIN=$HOME/local/sstcore_install/bin" >> $GITHUB_ENV
         echo "SST_ELEMENTS_HOME=$HOME/local/sstelements_install" >> $GITHUB_ENV
@@ -87,23 +85,16 @@ jobs:
         echo "Trying to install libtool"
         sudo apt-get install -y libtool-bin
         echo "***"
-        export LIBTOOLIZE=$(type -P libtoolize)
-        export LIBTOOL=$(type -P "${LIBTOOLIZE%???}")
         echo "LIBTOOLIZE path = " `echo $LIBTOOLIZE`
         echo "LIBTOOL path = " `echo $LIBTOOL`
         echo "LIBTOOLIZE version = " `libtoolize --version`
-        echo "ACLOCAL    version = " `aclocal --version`
-        echo "AUTOHEADER version = " `autoheader --version`
-        echo "AUTOCONF   version = " `autoconf --version`
-        echo "AUTOMAKE   version = " `automake --version`
-        echo "AUTORECONF version = " `autoreconf --version`
         echo "LIBTOOL    version = " `libtool --version`
         echo "***"
 
-    - name: Information Dump 2
+    - name: System Information Dump - Before Build
       run: |
         echo "*******************************************"
-        echo "*** BEFORE SST BUILD INFO DUMP"
+        echo "*** SYSTEM INFO DUMP BEFORE BUILD"
         echo "*******************************************"
         echo
         echo "pwd = " `pwd`
@@ -155,6 +146,9 @@ jobs:
         echo "ls $HOME "
         ls -lia $HOME
         echo "***"
+        echo "ls $HOME/local "
+        ls -lia $HOME/local
+        echo "***"
         echo "ls $SST_CORE_HOME"
         ls -lia $SST_CORE_HOME
         echo "***"
@@ -164,12 +158,13 @@ jobs:
         echo "cd to $HOME"
         cd $HOME
         echo "***"
+        echo "RUNNING SST FROM HOME DIR"
         echo "sst version = " `$SST_CORE_BIN/sst --version`
         echo "***"
-        echo "Trying to set the PATH to SST BIN DIR"
+        echo "TRYING TO SET THE PATH TO SST BIN DIR"
         echo /home/runner/local/sstcore_install/bin >> $GITHUB_PATH
         echo "***"
-        echo "running sst --version using the PATH"
+        echo "RUNNING SST --VERSION USING THE PATH"
         sst --version
 
     - name: Perform Testing on SST-Core
