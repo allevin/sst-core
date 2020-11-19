@@ -1,4 +1,4 @@
-name: SST Testing Frameworks Branch CI
+name: SST-Core Testing Frameworks Branch CI
 
 on:
   workflow_dispatch:
@@ -14,11 +14,11 @@ defaults:
 jobs:
   Build_and_Test:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os: [ubuntu-20.04]
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
-    name: ${{ matrix.os }}/PY-${{ matrix.python-version }}
+        python-version: [2.7, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9]
+    name: SST-Core_Frameworks_Test:${{ matrix.os }}/PY-${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
 
     steps:
