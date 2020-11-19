@@ -17,19 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9]
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
     name: Test:${{ matrix.os }}/PY-${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Checkout SST-Core source
-      uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-
     - name: System Information Dump - Startup
       run: |
         echo "*******************************************"
@@ -45,13 +37,79 @@ jobs:
     - name: Set Env Variables
       run: |
         echo "*******************************************"
-        echo "*** SET ENV VARIABLES (AFFECTS FUTURE STEPS)"
+        echo "*** SET SOURCE AND LOCAL DIR ENV VAR (THIS AFFECTS FUTURE STEPS)"
         echo "*******************************************"
-        echo "SST_CORE_HOME=$HOME/local/sstcore_install" >> $GITHUB_ENV
-        echo "SST_CORE_BIN=$HOME/local/sstcore_install/bin" >> $GITHUB_ENV
-        echo "SST_ELEMENTS_HOME=$HOME/local/sstelements_install" >> $GITHUB_ENV
-        echo "SST_ELEMENTS_BIN=$HOME/local/sstelements_install/bin" >> $GITHUB_ENV
+        echo "SST_SOURCE_PATH=$HOME/work/sst-core/sst-core" >> $GITHUB_ENV
+        echo "SST_GEN_INSTALL_PATH=$HOME/local" >> $GITHUB_ENV
         echo "***"
+        echo "LOCATION OF GITHUB_ENV SCRIPT"
+        echo $GITHUB_ENV
+        echo "***"
+        echo "CONTENTS OF GITHUB_ENV"
+        cat $GITHUB_ENV
+        echo "***"
+
+    - name: Set Env Variables
+      run: |
+        echo "*******************************************"
+        echo "*** SET ENV VARS (THIS AFFECTS FUTURE STEPS)"
+        echo "*******************************************"
+        echo "SST_CORE_SOURCE_PATH=$SST_SOURCE_PATH/sst-core_source" >> $GITHUB_ENV
+#        echo "SST_ELEMENTS_SOURCE_PATH=$SST_SOURCE_PATH/sst-elements_source" >> $GITHUB_ENV
+        echo "SST_CORE_HOME=$SST_GEN_INSTALL_PATH/sstcore_install" >> $GITHUB_ENV
+#        echo "SST_ELEMENTS_HOME=$SST_GEN_INSTALL_PATH/sstelements_install" >> $GITHUB_ENV
+        echo "SST_CORE_BIN=$SST_GEN_INSTALL_PATH/sstcore_install/bin" >> $GITHUB_ENV
+#        echo "SST_ELEMENTS_BIN=$SST_GEN_INSTALL_PATH/sstelements_install/bin" >> $GITHUB_ENV
+        echo "***"
+        echo "LOCATION OF GITHUB_ENV SCRIPT"
+        echo $GITHUB_ENV
+        echo "***"
+        echo "CONTENTS OF GITHUB_ENV"
+        cat $GITHUB_ENV
+        echo "***"
+
+#   Checkout this users SST-core repo/branch
+    - name: Checkout Users SST-Core source
+      uses: actions/checkout@v2
+      with:
+        path: ./sst-core_source
+
+##   Checkout the sstsimulator orgs sst-elements/devel branch
+#    - name: Checkout SSTSimulators SST-Elements source
+#      uses: actions/checkout@v2
+#      with:
+#        repository: sstsimulator/sst-elements
+#        path: ./sst-elements_source
+
+    - name: Check Source Directories
+      run: |
+        echo "*******************************************"
+        echo "*** CHECK INSTALL DIRS AND SET PATH"
+        echo "*******************************************"
+        echo "$HOME path = " `echo $HOME`
+        echo "$SST_CORE_HOME path = " `echo $SST_CORE_HOME`
+        echo "$SST_CORE_BIN path = " `echo $SST_CORE_BIN`
+        echo "***"
+        echo "ls HOME "
+        ls -lia $HOME
+        echo "***"
+        echo "SST_SOURCE_PATHS = " `echo $SST_SOURCE_PATH`
+        echo "ls SST_SOURCE_PATHS "
+        ls -lia $SST_SOURCE_PATHS
+        echo "***"
+#        echo "SST_ELEMENTS_SOURCE_PATH = " `echo $SST_ELEMENTS_SOURCE_PATH`
+#        echo "ls SST_ELEMENTS_SOURCE_PATH "
+#        ls -lia $SST_ELEMENTS_SOURCE_PATH
+#        echo "***"
+        echo "SST_CORE_SOURCE_PATH = " `echo $SST_CORE_SOURCE_PATH`
+        echo "ls SST_CORE_SOURCE_PATH "
+        ls -lia $SST_CORE_SOURCE_PATH
+        echo "***"
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
 
     - name: Install TestTools Module
       run: |
@@ -72,7 +130,7 @@ jobs:
         echo "mpirun version = " `mpirun --version`
         echo "***"
 
-    - name: Setup Autotools
+    - name: Install Autotools
       run: |
         echo "*******************************************"
         echo "*** INSTALL AUTOTOOLS"
@@ -98,45 +156,75 @@ jobs:
         env | sort
         echo "***"
 
-    - name: Perform Autogen on SST-Core
+    - name: Build and Install SST-Core
       run: |
+        echo "*******************************************"
+        echo "*** CHANGE DIRECTORY TO SST-Core SOURCE DIR"
+        echo "*******************************************"
+        cd $SST_CORE_SOURCE_PATH
+        echo "pwd = " `pwd`
+        echo "***"
         echo "*******************************************"
         echo "*** RUNNING AUTOGEN ON SST-Core"
         echo "*******************************************"
         ./autogen.sh
         echo "***"
-
-    - name: Perform Configure on SST-Core
-      run: |
         echo "*******************************************"
         echo "*** RUNNING CONFIGURE ON SST-Core"
         echo "*******************************************"
         ./configure --prefix=$SST_CORE_HOME
         echo "***"
-
-    - name: Perform Make on SST-Core
-      run: |
         echo "*******************************************"
         echo "*** RUNNING MAKE ON SST-Core"
         echo "*******************************************"
         make -j16
         echo "***"
-
-    - name: Perform Make Install on SST-Core
-      run: |
         echo "*******************************************"
         echo "*** RUNNING MAKE INSTALL ON SST-Core"
         echo "*******************************************"
         make install
+        echo "***"
+
+#    - name: Build and Install SST-Elements
+#      run: |
+#        echo "*******************************************"
+#        echo "*** CHANGE DIRECTORY TO SST-Elements SOURCE DIR"
+#        echo "*******************************************"
+#        cd $SST_ELEMENTS_SOURCE_PATH
+#        echo "pwd = " `pwd`
+#        echo "***"
+#        echo "*******************************************"
+#        echo "*** RUNNING AUTOGEN ON SST-Elements"
+#        echo "*******************************************"
+#        ./autogen.sh
+#        echo "***"
+#        echo "*******************************************"
+#        echo "*** RUNNING CONFIGURE ON SST-Elements"
+#        echo "*******************************************"
+#        ./configure --prefix=$SST_CORE_HOME --with-sst-core=$SST_CORE_HOME
+#        echo "***"
+#        echo "*******************************************"
+#        echo "*** RUNNING MAKE ON SST-Elements"
+#        echo "*******************************************"
+#        make -j16
+#        echo "***"
+#        echo "*******************************************"
+#        echo "*** RUNNING MAKE INSTALL ON SST-Elements"
+#        echo "*******************************************"
+#        make install
+#        echo "***"
 
     - name: Check Installation Dirs and Set PATH Env Var
       run: |
         echo "*******************************************"
-        echo "*** CHECK INSTALL DIRS AND SET PATH"
+        echo "*** CHECK INSTALL DIRS"
         echo "*******************************************"
         echo "$HOME path = " `echo $HOME`
+        echo "$SST_GEN_INSTALL_PATH path = " `echo $SST_GEN_INSTALL_PATH`
         echo "$SST_CORE_HOME path = " `echo $SST_CORE_HOME`
+#        echo "$SST_ELEMENTS_HOME path = " `echo $SST_CORE_HOME`
         echo "$SST_CORE_BIN path = " `echo $SST_CORE_BIN`
+#        echo "$SST_ELEMENTS_BIN path = " `echo $SST_ELEMENTS_BIN`
         echo "***"
         echo "ls $HOME "
         ls -lia $HOME
@@ -144,13 +232,27 @@ jobs:
         echo "ls $HOME/local "
         ls -lia $HOME/local
         echo "***"
+        echo "ls $SST_GEN_INSTALL_PATH"
+        ls -lia $SST_GEN_INSTALL_PATH
+        echo "***"
         echo "ls $SST_CORE_HOME"
         ls -lia $SST_CORE_HOME
         echo "***"
         echo "ls $SST_CORE_BIN"
         ls -lia $SST_CORE_BIN
         echo "***"
-        echo "SET THE PATH TO SST BIN DIR (ONLY AVAILABLE IN FUTURE STEPS)"
+#        echo "ls $SST_ELEMENTS_HOME"
+#        ls -lia $SST_ELEMENTS_HOME
+#        echo "***"
+#        echo "ls $SST_ELEMENTS_BIN"
+#        ls -lia $SST_ELEMENTS_BIN
+#        echo "***"
+
+    - name: Set Path to the SST bin Directory
+      run: |
+        echo "*******************************************"
+        echo "*** SET THE PATH TO SST BIN DIR (ONLY AVAILABLE IN FUTURE STEPS)"
+        echo "*******************************************"
         echo $SST_CORE_BIN >> $GITHUB_PATH
         echo "***"
         echo "LOCATION OF GITHUB_PATH SCRIPT"
@@ -175,15 +277,25 @@ jobs:
         sst --version
         echo "***"
 
-    - name: Perform Testing on SST-Core
+    - name: Perform Frameworks Testing on SST-Core
       run: |
         echo "*******************************************"
-        echo "*** Testing SST-Core"
+        echo "*** FRAMEWORKS TESTING - SST-CORE"
         echo "*******************************************"
         echo "cd to $HOME"
         cd $HOME
         echo "***"
-        $SST_CORE_BIN/sst-test-core
+        sst-test-core
         echo "***"
-        echo "ls $HOME "
-        ls -lia $HOME
+
+#    - name: Perform Frameworks Testing on SST-Elements
+#      run: |
+#        echo "*******************************************"
+#        echo "*** FRAMEWORKS TESTING - SST-ELEMENTS"
+#        echo "*******************************************"
+#        echo "cd to $HOME"
+#        cd $HOME
+#        echo "***"
+#        sst-test-elements -c
+#        echo "***"
+
