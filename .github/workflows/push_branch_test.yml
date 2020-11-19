@@ -23,7 +23,7 @@ jobs:
         os: [ubuntu-20.04]
         python-version: [2.7, 3.5]
 #        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
-    name: ${{ matrix.os }}/${{ matrix.python-version }}
+    name: ${{ matrix.os }}/PY-${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -127,17 +127,17 @@ jobs:
         make -j16
         echo "***"
 
-    - name: Perform Install on SST-Core
+    - name: Perform Make Install on SST-Core
       run: |
         echo "*******************************************"
-        echo "*** RUNNING INSTALL ON SST-Core"
+        echo "*** RUNNING MAKE INSTALL ON SST-Core"
         echo "*******************************************"
         make install
 
-    - name: Check Install of SST-Core
+    - name: Check Installation Dirs and Set PATH Env Var
       run: |
         echo "*******************************************"
-        echo "*** CHECK INSTALL OF SST-Core"
+        echo "*** CHECK INSTALL DIRS AND SET PATH"
         echo "*******************************************"
         echo "$HOME path = " `echo $HOME`
         echo "$SST_CORE_HOME path = " `echo $SST_CORE_HOME`
@@ -155,17 +155,37 @@ jobs:
         echo "ls $SST_CORE_BIN"
         ls -lia $SST_CORE_BIN
         echo "***"
+        echo "TRYING TO SET THE PATH TO SST BIN DIR"
+        echo /home/runner/local/sstcore_install/bin >> $GITHUB_PATH
+        echo "***"
+        echo "WHAT IS GITHUB_PATH"
+        echo $GITHUB_PATH
+        echo "***"
+        echo "CONTENTS OF GITHUB_PATH"
+        cat $GITHUB_PATH
+        echo "***"
+
+
+    - name: Quick Check of SST-Core Operation
+      run: |
+        echo "*******************************************"
+        echo "*** QUICK CHECK OF SST-CORE OPERATION"
+        echo "*******************************************"
+        echo "DEBUG - WHAT IS GITHUB_PATH"
+        echo $GITHUB_PATH
+        echo "***"
+        echo "DEBUG - CONTENTS OF GITHUB_PATH"
+        cat $GITHUB_PATH
+        echo "***"
         echo "cd to $HOME"
         cd $HOME
         echo "***"
         echo "RUNNING SST FROM HOME DIR"
         echo "sst version = " `$SST_CORE_BIN/sst --version`
         echo "***"
-        echo "TRYING TO SET THE PATH TO SST BIN DIR"
-        echo /home/runner/local/sstcore_install/bin >> $GITHUB_PATH
-        echo "***"
         echo "RUNNING SST --VERSION USING THE PATH"
         sst --version
+        echo "***"
 
     - name: Perform Testing on SST-Core
       run: |
