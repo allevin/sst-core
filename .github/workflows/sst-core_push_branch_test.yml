@@ -55,11 +55,11 @@ jobs:
         echo "*** SET ENV VARS (THIS AFFECTS FUTURE STEPS)"
         echo "*******************************************"
         echo "SST_CORE_SOURCE_PATH=$SST_SOURCE_PATH/sst-core_source" >> $GITHUB_ENV
-#        echo "SST_ELEMENTS_SOURCE_PATH=$SST_SOURCE_PATH/sst-elements_source" >> $GITHUB_ENV
+        echo "SST_ELEMENTS_SOURCE_PATH=$SST_SOURCE_PATH/sst-elements_source" >> $GITHUB_ENV
         echo "SST_CORE_HOME=$SST_GEN_INSTALL_PATH/sstcore_install" >> $GITHUB_ENV
-#        echo "SST_ELEMENTS_HOME=$SST_GEN_INSTALL_PATH/sstelements_install" >> $GITHUB_ENV
+        echo "SST_ELEMENTS_HOME=$SST_GEN_INSTALL_PATH/sstelements_install" >> $GITHUB_ENV
         echo "SST_CORE_BIN=$SST_GEN_INSTALL_PATH/sstcore_install/bin" >> $GITHUB_ENV
-#        echo "SST_ELEMENTS_BIN=$SST_GEN_INSTALL_PATH/sstelements_install/bin" >> $GITHUB_ENV
+        echo "SST_ELEMENTS_BIN=$SST_GEN_INSTALL_PATH/sstelements_install/bin" >> $GITHUB_ENV
         echo "***"
         echo "LOCATION OF GITHUB_ENV SCRIPT"
         echo $GITHUB_ENV
@@ -74,12 +74,12 @@ jobs:
       with:
         path: ./sst-core_source
 
-##   Checkout the sstsimulator orgs sst-elements/devel branch
-#    - name: Checkout SSTSimulators SST-Elements source
-#      uses: actions/checkout@v2
-#      with:
-#        repository: sstsimulator/sst-elements
-#        path: ./sst-elements_source
+#   Checkout the sstsimulator orgs sst-elements/devel branch
+    - name: Checkout SSTSimulators SST-Elements source
+      uses: actions/checkout@v2
+      with:
+        repository: sstsimulator/sst-elements
+        path: ./sst-elements_source
 
     - name: Check Source Directories
       run: |
@@ -97,10 +97,10 @@ jobs:
         echo "ls SST_SOURCE_PATHS "
         ls -lia $SST_SOURCE_PATHS
         echo "***"
-#        echo "SST_ELEMENTS_SOURCE_PATH = " `echo $SST_ELEMENTS_SOURCE_PATH`
-#        echo "ls SST_ELEMENTS_SOURCE_PATH "
-#        ls -lia $SST_ELEMENTS_SOURCE_PATH
-#        echo "***"
+        echo "SST_ELEMENTS_SOURCE_PATH = " `echo $SST_ELEMENTS_SOURCE_PATH`
+        echo "ls SST_ELEMENTS_SOURCE_PATH "
+        ls -lia $SST_ELEMENTS_SOURCE_PATH
+        echo "***"
         echo "SST_CORE_SOURCE_PATH = " `echo $SST_CORE_SOURCE_PATH`
         echo "ls SST_CORE_SOURCE_PATH "
         ls -lia $SST_CORE_SOURCE_PATH
@@ -222,9 +222,9 @@ jobs:
         echo "$HOME path = " `echo $HOME`
         echo "$SST_GEN_INSTALL_PATH path = " `echo $SST_GEN_INSTALL_PATH`
         echo "$SST_CORE_HOME path = " `echo $SST_CORE_HOME`
-#        echo "$SST_ELEMENTS_HOME path = " `echo $SST_CORE_HOME`
+        echo "$SST_ELEMENTS_HOME path = " `echo $SST_CORE_HOME`
         echo "$SST_CORE_BIN path = " `echo $SST_CORE_BIN`
-#        echo "$SST_ELEMENTS_BIN path = " `echo $SST_ELEMENTS_BIN`
+        echo "$SST_ELEMENTS_BIN path = " `echo $SST_ELEMENTS_BIN`
         echo "***"
         echo "ls $HOME "
         ls -lia $HOME
@@ -241,12 +241,12 @@ jobs:
         echo "ls $SST_CORE_BIN"
         ls -lia $SST_CORE_BIN
         echo "***"
-#        echo "ls $SST_ELEMENTS_HOME"
-#        ls -lia $SST_ELEMENTS_HOME
-#        echo "***"
-#        echo "ls $SST_ELEMENTS_BIN"
-#        ls -lia $SST_ELEMENTS_BIN
-#        echo "***"
+        echo "ls $SST_ELEMENTS_HOME"
+        ls -lia $SST_ELEMENTS_HOME
+        echo "***"
+        echo "ls $SST_ELEMENTS_BIN"
+        ls -lia $SST_ELEMENTS_BIN
+        echo "***"
 
     - name: Set Path to the SST bin Directory
       run: |
