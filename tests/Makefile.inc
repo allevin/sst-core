@@ -32,7 +32,6 @@ EXTRA_DIST += \
     tests/test_UnitAlgebra.py \
     tests/test_TracerComponent_1.py \
     tests/test_TracerComponent_2.py \
-    tests/refFiles/test_Component.out \
     tests/refFiles/test_DistribComponent_discrete.out \
     tests/refFiles/test_DistribComponent_expon.out \
     tests/refFiles/test_DistribComponent_gaussian.out \
